@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-video = cv2.VideoCapture("fire_video.mp4")
+video = cv2.VideoCapture(0)
 
 fgbg = cv2.createBackgroundSubtractorMOG2()
 
@@ -30,11 +30,13 @@ while True:
 
     for contour in contours:
         area = cv2.contourArea(contour)
-        if area > 100: 
-            print("Flame motion detected!")
-
+        if area > 50:
             x, y, w, h = cv2.boundingRect(contour)
-            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+
+            # Draw the rectangle
+            cv2.rectangle(frame, (x, y), (x+w, y+h), (96, 225, 0), 2)
+            cv2.putText(frame, 'FIRE', (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (96,225,0), 2)
+            
 
     cv2.imshow("Flame Motion Detection", frame)
     cv2.imshow("Flames Only", flames_only)
